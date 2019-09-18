@@ -1,0 +1,555 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    },
+    "ServiceUrl" :{
+      "type":"string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "authenticationSettings": {
+          "subscriptionKeyRequired": false
+        },
+        "subscriptionKeyParameterNames": {
+          "header": "Ocp-Apim-Subscription-Key",
+          "query": "subscription-key"
+        },
+        "apiRevision": "1",
+        "apiVersion": "v1",
+        "isCurrent": true,
+        "apiVersionSetId": "[concat(resourceId('Microsoft.ApiManagement/service', parameters('ApimServiceName')), '/apiVersionSets/5d821ec5ac64cc328ef68133')]",
+        "displayName": "todo",
+        "serviceUrl": "[parameters('ServiceUrl')]",
+        "path": "todo",
+        "protocols": [
+          "https"
+        ]
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo')]",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "contentType": "application/vnd.ms-azure-apim.swagger.definitions+json",
+        "document": {
+          "value": "{\"definitions\":{\"TodoItem\":{\"type\":\"object\",\"properties\":{\"id\":{\"format\":\"int64\",\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"isComplete\":{\"type\":\"boolean\"}}},\"TodoItemArray\":{\"uniqueItems\":false,\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/TodoItem\"}},\"ApiValuesGet200TextPlainResponse\":{\"uniqueItems\":false,\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"ApiValuesGet200ApplicationJsonResponse\":{\"uniqueItems\":false,\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"ApiValuesGet200TextJsonResponse\":{\"uniqueItems\":false,\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"Value\":{\"type\":\"string\"},\"ApiValuesIdGet200TextPlainResponse\":{\"type\":\"string\"},\"ApiValuesIdGet200ApplicationJsonResponse\":{\"type\":\"string\"},\"ApiValuesIdGet200TextJsonResponse\":{\"type\":\"string\"}}}"
+        }
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/5d821ec991f0e911bc732b73')]",
+      "type": "Microsoft.ApiManagement/service/apis/schemas",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItemArray"
+              },
+              {
+                "contentType": "application/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItemArray"
+              },
+              {
+                "contentType": "text/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItemArray"
+              }
+            ]
+          }
+        ],
+        "displayName": "/api/Todo - GET",
+        "method": "GET",
+        "urlTemplate": "/api/Todo"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/get-api-todo')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": [
+            {
+              "contentType": "application/json-patch+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "application/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "text/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "application/*+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              },
+              {
+                "contentType": "application/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              },
+              {
+                "contentType": "text/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              }
+            ]
+          }
+        ],
+        "displayName": "/api/Todo - POST",
+        "method": "POST",
+        "urlTemplate": "/api/Todo"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/post-api-todo')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int64.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": []
+          }
+        ],
+        "displayName": "/api/Todo/{id} - DELETE",
+        "method": "DELETE",
+        "urlTemplate": "/api/Todo/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/delete-api-todo-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int64.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              },
+              {
+                "contentType": "application/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              },
+              {
+                "contentType": "text/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "TodoItem"
+              }
+            ]
+          }
+        ],
+        "displayName": "/api/Todo/{id} - GET",
+        "method": "GET",
+        "urlTemplate": "/api/Todo/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/get-api-todo-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int64.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": [
+            {
+              "contentType": "application/json-patch+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "application/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "text/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            },
+            {
+              "contentType": "application/*+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "TodoItem"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": []
+          }
+        ],
+        "displayName": "/api/Todo/{id} - PUT",
+        "method": "PUT",
+        "urlTemplate": "/api/Todo/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/put-api-todo-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesGet200TextPlainResponse"
+              },
+              {
+                "contentType": "application/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesGet200ApplicationJsonResponse"
+              },
+              {
+                "contentType": "text/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesGet200TextJsonResponse"
+              }
+            ]
+          }
+        ],
+        "displayName": "/api/Values - GET",
+        "method": "GET",
+        "urlTemplate": "/api/Values"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/get-api-values')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": [
+            {
+              "contentType": "application/json-patch+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "application/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "text/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "application/*+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": []
+          }
+        ],
+        "displayName": "/api/Values - POST",
+        "method": "POST",
+        "urlTemplate": "/api/Values"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/post-api-values')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int32.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": []
+          }
+        ],
+        "displayName": "/api/Values/{id} - DELETE",
+        "method": "DELETE",
+        "urlTemplate": "/api/Values/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/delete-api-values-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int32.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesIdGet200TextPlainResponse"
+              },
+              {
+                "contentType": "application/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesIdGet200ApplicationJsonResponse"
+              },
+              {
+                "contentType": "text/json",
+                "schemaId": "5d821ec991f0e911bc732b73",
+                "typeName": "ApiValuesIdGet200TextJsonResponse"
+              }
+            ]
+          }
+        ],
+        "displayName": "/api/Values/{id} - GET",
+        "method": "GET",
+        "urlTemplate": "/api/Values/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/get-api-values-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "id",
+            "description": "Format - int32.",
+            "type": "integer",
+            "required": true,
+            "values": []
+          }
+        ],
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": [
+            {
+              "contentType": "application/json-patch+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "application/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "text/json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            },
+            {
+              "contentType": "application/*+json",
+              "schemaId": "5d821ec991f0e911bc732b73",
+              "typeName": "Value"
+            }
+          ]
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "Success",
+            "headers": [],
+            "representations": []
+          }
+        ],
+        "displayName": "/api/Values/{id} - PUT",
+        "method": "PUT",
+        "urlTemplate": "/api/Values/{id}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/todo/put-api-values-id')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'todo', '5d821ec991f0e911bc732b73')]"
+      ]
+    },
+    {
+      "properties": {},
+      "name": "[concat(parameters('ApimServiceName'), '/todoproduct/todo')]",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'todo')]"
+      ]
+    }
+  ]
+}

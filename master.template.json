@@ -1,0 +1,193 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "repoBaseUrl":{
+            "type": "string",
+            "metadata": {
+                "description": "Base URL of the repository"
+            }
+        },
+        "ApimServiceName": {
+            "type": "string",
+            "metadata": {
+                "description" : "The name of the API Management"
+            }
+        },
+        "publisherEmail": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "The email address of the owner of the service"
+            }
+        },
+        "publisherName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "The name of the owner of the service"
+            }
+        },
+        "sku": {
+            "type": "string",
+            "allowedValues": ["Developer", "Standard", "Premium", "Consumption"],
+            "defaultValue": "Developer",
+            "metadata": {
+                "description": "The pricing tier of this API Management service"
+            }
+        },
+        "skuCount": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description":
+                    "The instance  size of this API Management service."
+            }
+        },
+        "LinkedTemplatesBaseUrl": {
+         "type": "string",
+         "metadata": {
+           "description": "Base URL of the repository that contains the generated templates"
+         }
+       },
+       "PolicyXMLBaseUrl": {
+         "type": "string",
+         "metadata": {
+           "description": "Base URL of the repository that contains the generated policy files"
+         }         
+       },
+       "ToDoServiceUrl": {
+        "type": "string",
+        "metadata": {
+          "description": "Service URL for the backend APIs"
+        }         
+      },
+      "ToDoV2ServiceUrl": {
+        "type": "string",
+        "metadata": {
+          "description": "Service URL for the backend APIs"
+        }         
+      }    
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "serviceTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                 "uri":"[concat(parameters('repoBaseUrl'), '/service.template.json')]",
+                 "contentVersion":"1.0.0.0"
+              },
+              "parameters": {
+                "ApimServiceName": {"value": "[parameters('ApimServiceName')]" }, 
+                "PublisherName": {"value": "[parameters('PublisherName')]" },
+                "PublisherEmail": {"value": "[parameters('PublisherEmail')]" },
+                "sku": {"value": "[parameters('sku')]" },
+                "skuCount": {"value": "[parameters('skuCount')]" }
+               }
+            }
+         },        
+         {
+            "apiVersion": "2017-05-10",
+            "name": "productsTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                 "uri":"[concat(parameters('repoBaseUrl'), '/products/products.template.json')]",
+                 "contentVersion":"1.0.0.0"
+              },
+              "parameters": {
+                 "ApimServiceName": {"value": "[parameters('ApimServiceName')]" }                 
+               }
+            },
+            "dependsOn": [
+             "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]"             
+            ]
+         },
+         {
+          "apiVersion": "2017-05-10",
+          "name": "subscriptionsTemplate",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+               "uri":"[concat(parameters('repoBaseUrl'), '/subscriptions.template.json')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters": {
+               "ApimServiceName": {"value": "[parameters('ApimServiceName')]" }
+             }
+          },
+          "dependsOn": [
+           "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"             
+          ]
+       },    
+         {
+          "apiVersion": "2017-05-10",
+          "name": "apiTestApiTemplate",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+               "uri":"[concat(parameters('repoBaseUrl'), '/api-testapi/hiena-master.template.json')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters": {
+               "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
+               "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-testapi')]"},
+               "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-testapi/policies')]"}
+             }
+          },
+          "dependsOn": [
+          "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"             
+          ]
+       },
+       {
+        "apiVersion": "2017-05-10",
+        "name": "apiTodoApiTemplate",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+             "uri":"[concat(parameters('repoBaseUrl'), '/api-todo/hiena-master.template.json')]",
+             "contentVersion":"1.0.0.0"
+          },
+          "parameters": {
+             "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
+             "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo')]"},
+             "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo/policies')]"},
+             "ServiceUrl": {"value":"[parameters('ToDoServiceUrl')]"}
+           }
+        },
+        "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'apiTestApiTemplate')]"             
+        ]
+     },
+     {
+      "apiVersion": "2017-05-10",
+      "name": "apiTodoV2ApiTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+           "uri":"[concat(parameters('repoBaseUrl'), '/api-todo-v2/hiena-master.template.json')]",
+           "contentVersion":"1.0.0.0"
+        },
+        "parameters": {
+           "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
+           "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo-v2')]"},
+           "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo-v2/policies')]"},
+           "ServiceUrl": {"value":"[parameters('ToDoV2ServiceUrl')]"}
+         }
+      },
+      "dependsOn": [
+      "[resourceId('Microsoft.Resources/deployments', 'apiTodoApiTemplate')]"             
+      ]
+   }                  
+    ],
+    "outputs": {}
+}
