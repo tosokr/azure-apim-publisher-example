@@ -17,7 +17,7 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'APIM_PRODUCTION'
-    scriptType: 'bash'
+    scriptType: 'batch'
     scriptLocation: 'inlineScript'
     inlineScript: |
       objectId=$(az ad sp show --id $servicePrincipleId --query objectId --output tsv)
