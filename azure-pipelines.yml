@@ -24,8 +24,11 @@ steps:
     location: '$(LOCATION)'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
-    csmParametersFile: '$(build.sourcesDirectory)\storageaccount.parameters.json'
-    overrideParameters: '-storageAccountName $(STORAGEACCOUNTNAME) -containerName $(STORAGECONTAINERNAME) -servicePrincipleId $servicePrincipalId -location $(LOCATION)'
+    overrideParameters: |
+      -storageAccountName "$(storageAccountName)" 
+      -containerName "$(storageContainerName)" 
+      -servicePrincipleId $servicePrincipalId 
+      -location "$(location)"
     deploymentMode: 'Incremental'
     addSpnToEnvironment: true
 - task: AzureFileCopy@4
@@ -52,8 +55,8 @@ steps:
     azureResourceManagerConnection: 'APIM_PRODUCTION'
     subscriptionId: 'f1aa6a06-4aae-46b3-887c-983d96f64131'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'rg-apidemo-production'
-    location: 'West Europe'
+    resourceGroupName: '$(RESOURCEGROUP)'
+    location: '$(LOCATION)'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
     csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
