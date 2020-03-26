@@ -29,7 +29,6 @@ steps:
     ScriptType: 'InlineScript'
     Inline: |
       $objectId = (Get-AzADServicePrincipal -ApplicationId $env:servicePrincipalIdGlobal).Id
-      Write-Host $objectId
       Write-Host "##vso[task.setvariable variable=servicePrincipalObjectId;]$objectId"
     azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
