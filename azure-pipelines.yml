@@ -1,0 +1,46 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - azure-pipelines.yml
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '$(build.sourcesDirectory)\*'
+    azureSubscription: 'APIM_PRODUCTION'
+    Destination: 'AzureBlob'
+    storage: '$(storageAccountName)'
+    ContainerName: '$(storageContainerName)'
+    AdditionalArgumentsForBlobCopy: '--recursive=true --overwrite=true'
+  displayName: 'Run a one-line script'
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'APIM_PRODUCTION'
+    ScriptType: 'InlineScript'
+    Inline: |
+      Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
+      $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
+    azurePowerShellVersion: 'LatestVersion'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'APIM_PRODUCTION'
+    subscriptionId: 'f1aa6a06-4aae-46b3-887c-983d96f64131'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-apidemo-production'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
+    csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
+    overrideParameters: '-storageSasToken $(token)'
+    deploymentMode: 'Incremental'
