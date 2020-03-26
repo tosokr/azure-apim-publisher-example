@@ -20,9 +20,10 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      objectId=$(az ad sp show --id $servicePrincipalId --query objectId --output tsv)
+      objectId=$(az ad sp show --id $servicePrincipleId --query objectId --output tsv)
       echo "##vso[task.setvariable variable=servicePrincipleObjectId]$objectId
     addSpnToEnvironment: true
+    useGlobalConfig: true
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
