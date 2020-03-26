@@ -21,15 +21,16 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       $objectId = $env:servicePrincipalId
+      Write-Host "ObjectId: "$objectId
+      Write-Host "ServicePrinciple: "$env:servicePrincipalId
       Write-Host "##vso[task.setvariable variable=servicePrincipleIdGlobal;]$objectId"
     addSpnToEnvironment: true
-    useGlobalConfig: false
 - task: AzurePowerShell@5
   inputs:
     azureSubscription: 'APIM_PRODUCTION'
     ScriptType: 'InlineScript'
     Inline: |
-      $objectId = (Get-AzADServicePrincipal -ApplicationId  $env:servicePrincipalIdGlobal).Id
+      $objectId = (Get-AzADServicePrincipal -ApplicationId $env:servicePrincipalIdGlobal).Id
       Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
     azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
