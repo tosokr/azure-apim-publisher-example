@@ -118,7 +118,7 @@
             "apiVersion": "2018-09-01-preview",
             "name": "[parameters('servicePrincipleId')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default',parameters('containerName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default/',parameters('containerName'))]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('Storage Blob Data Contributor')]",
