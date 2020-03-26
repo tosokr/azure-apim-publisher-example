@@ -4,8 +4,12 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
-
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - azure-pipelines.yml
 pool:
   vmImage: 'windows-latest'
 
