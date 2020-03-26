@@ -24,7 +24,7 @@ steps:
       $objectId = (Get-AzADServicePrincipal -ApplicationId  $env:servicePrincipalId).Id
       Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
     addSpnToEnvironment: true
-    useGlobalConfig: true
+    useGlobalConfig: false
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
