@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
       "ApimServiceName": {
@@ -13,41 +13,13 @@
             "apiVersion": "2019-01-01",
             "scale": null,
             "properties": {
-              "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('ApimServiceName'), 'todoproduct')]",              
+              "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('ApimServiceName'), 'starter')]",              
               "displayName": "subscription1",
                 "state": "active",
                 "primaryKey": "087efd52181243319e476df212dc06f7",
                 "secondaryKey": "da7fa24c37964b29ab7c02a17740007d",
                 "allowTracing": false
             }
-        },
-        {
-          "type": "Microsoft.ApiManagement/service/subscriptions",
-          "name": "[concat(parameters('ApimServiceName'), '/subscription2')]",
-          "apiVersion": "2019-01-01",
-          "scale": null,
-          "properties": {
-            "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('ApimServiceName'), 'todoproduct')]",              
-            "displayName": "subscription2",
-              "state": "active",
-              "primaryKey": "88abac0e9e9a4675a1f829d8e508bcfd",
-              "secondaryKey": "6938cd2563034c2181a1925633c66df1",
-              "allowTracing": false
-          }
-      },
-      {
-        "type": "Microsoft.ApiManagement/service/subscriptions",
-        "name": "[concat(parameters('ApimServiceName'), '/testsubscription')]",
-        "apiVersion": "2019-01-01",
-        "scale": null,
-        "properties": {
-          "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('ApimServiceName'), 'testproduct')]",              
-          "displayName": "subscription2",
-            "state": "active",
-            "primaryKey": "6d12d7f2204343c584f1dcd307b4d4b6",
-            "secondaryKey": "70fc6e26793c428685aca39527abe396",
-            "allowTracing": false
-        }
-    }
+        } 
     ]
 }

@@ -125,69 +125,7 @@
           "dependsOn": [
            "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"             
           ]
-       },    
-         {
-          "apiVersion": "2017-05-10",
-          "name": "apiTestApiTemplate",
-          "type": "Microsoft.Resources/deployments",
-          "properties": {
-            "mode": "Incremental",
-            "templateLink": {
-               "uri":"[concat(parameters('repoBaseUrl'), '/api-testapi/hiena-master.template.json')]",
-               "contentVersion":"1.0.0.0"
-            },
-            "parameters": {
-               "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
-               "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-testapi')]"},
-               "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-testapi/policies')]"}
-             }
-          },
-          "dependsOn": [
-          "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"             
-          ]
-       },
-       {
-        "apiVersion": "2017-05-10",
-        "name": "apiTodoApiTemplate",
-        "type": "Microsoft.Resources/deployments",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-             "uri":"[concat(parameters('repoBaseUrl'), '/api-todo/hiena-master.template.json')]",
-             "contentVersion":"1.0.0.0"
-          },
-          "parameters": {
-             "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
-             "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo')]"},
-             "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo/policies')]"},
-             "ServiceUrl": {"value":"[parameters('ToDoServiceUrl')]"}
-           }
-        },
-        "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'apiTestApiTemplate')]"             
-        ]
-     },
-     {
-      "apiVersion": "2017-05-10",
-      "name": "apiTodoV2ApiTemplate",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-           "uri":"[concat(parameters('repoBaseUrl'), '/api-todo-v2/hiena-master.template.json')]",
-           "contentVersion":"1.0.0.0"
-        },
-        "parameters": {
-           "ApimServiceName": {"value": "[parameters('ApimServiceName')]" },
-           "LinkedTemplatesBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo-v2')]"},
-           "PolicyXMLBaseUrl": {"value": "[concat(parameters('LinkedTemplatesBaseUrl'),'api-todo-v2/policies')]"},
-           "ServiceUrl": {"value":"[parameters('ToDoV2ServiceUrl')]"}
-         }
-      },
-      "dependsOn": [
-      "[resourceId('Microsoft.Resources/deployments', 'apiTodoApiTemplate')]"             
-      ]
-   }                  
+       }     
     ],
     "outputs": {}
 }

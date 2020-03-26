@@ -7,10 +7,10 @@
             "value": "tosokr@gmail.com"
         },
         "publisherName": {
-            "value": "Hiena"
+            "value": "Tosokr"
         },
         "ApimServiceName": {
-            "value": "hiena"
+            "value": "tosokr-production"
         },
         "sku": {
             "value": "Consumption"

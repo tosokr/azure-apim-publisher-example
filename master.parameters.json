@@ -6,19 +6,19 @@
             "value": "tosokr@gmail.com"
         },
         "publisherName": {
-            "value": "Hiena"
+            "value": "Tosokr"
         },
         "ApimServiceName": {
-            "value": "hienaNew"
+            "value": "tosokr-production"
         },
         "LinkedTemplatesBaseUrl": {
-            "value": "https://tosokr.blob.core.windows.net/apitemplates/"
+            "value": "https://tosokrapitemplates.blob.core.windows.net/apitemplates/"
           },
           "PolicyXMLBaseUrl": {
-            "value": "https://tosokr.blob.core.windows.net/apitemplates/api-arbitrage/policies"
+            "value": "https://tosokrapitemplates.blob.core.windows.net/apitemplates/api-arbitrage/policies"
           },
           "repoBaseUrl": {
-            "value": "https://tosokr.blob.core.windows.net/apitemplates"
+            "value": "https://tosokrapitemplates.blob.core.windows.net/apitemplates"
           },
           "sku": {
             "value": "Consumption"
