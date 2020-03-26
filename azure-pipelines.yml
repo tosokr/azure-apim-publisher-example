@@ -29,7 +29,7 @@ steps:
     ScriptType: 'InlineScript'
     Inline: |
       Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
-      $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
+      $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(90.0)
       Write-Host "##vso[task.setvariable variable=SASToken;]$token"
       Write-Host $($env:SASTOKEN)
     azurePowerShellVersion: 'LatestVersion'
