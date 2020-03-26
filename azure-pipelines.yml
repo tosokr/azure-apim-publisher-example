@@ -27,7 +27,7 @@ steps:
     overrideParameters: |
       -storageAccountName "$(storageAccountName)" 
       -containerName "$(storageContainerName)" 
-      -servicePrincipleId e7693929-61e0-47d1-8405-adb90a25fae8
+      -servicePrincipleId "$(temp)"
       -location "$(location)"
     deploymentMode: 'Incremental'
     addSpnToEnvironment: true
