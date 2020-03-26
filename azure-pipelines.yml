@@ -31,7 +31,7 @@ steps:
       Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
       $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
       ##vso[task.setvariable variable=SASToken;]$token
-      Write-Host $token
+      Write-Host $($env:SASTOKEN)
     azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
