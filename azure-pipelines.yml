@@ -24,7 +24,6 @@ steps:
     location: '$(LOCATION)'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
-    csmParametersFile: '$(build.sourcesDirectory)\storageaccount.parameters.json'
     overrideParameters: '-storageAccountName $(STORAGEACCOUNTNAME) -containerName $(STORAGECONTAINERNAME) -servicePrincipleId $servicePrincipalId -location $(LOCATION)'
     deploymentMode: 'Incremental'
     addSpnToEnvironment: true
