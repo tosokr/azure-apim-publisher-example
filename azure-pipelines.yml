@@ -1,0 +1,33 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '$(build.sourcesDirectory)'
+    azureSubscription: 'APIM_PRODUCTION'
+    Destination: 'AzureBlob'
+    storage: 'tosokrapitemplates'
+    ContainerName: 'apitemplates'
+    AdditionalArgumentsForBlobCopy: '--recursive=true /Y'
+  displayName: 'Run a one-line script'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'APIM_PRODUCTION'
+    subscriptionId: 'f1aa6a06-4aae-46b3-887c-983d96f64131'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-apidemo-production'
+    location: 'West Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
+    csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
+    deploymentMode: 'Incremental'
