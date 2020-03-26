@@ -20,9 +20,9 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      Install-Module Az.Resources -Scope CurrentUser -Force
-      $objectId = (Get-AzADServicePrincipal -ApplicationId  $env:servicePrincipalId).Id
-      Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
+      Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
+      $token = New-AzStorageContainerSASToken -Name $env:STORAGECONTAINERNAME -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
+      Write-Host "##vso[task.setvariable variable=SASToken;]$token"
     addSpnToEnvironment: true
     useGlobalConfig: false
 - task: AzureResourceManagerTemplateDeployment@3
