@@ -20,6 +20,7 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      Install-Module Az.Storage -Scope CurrentUser -Force
       Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
       $token = New-AzStorageContainerSASToken -Name $env:STORAGECONTAINERNAME -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
       Write-Host "##vso[task.setvariable variable=SASToken;]$token"
