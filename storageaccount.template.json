@@ -14,7 +14,7 @@
                 "description": "Container name, where the templates are going to be stored"
             }           
         },
-        "servicePrincipleId":{
+        "servicePrincipalId":{
             "type":"string",
             "metadata": {
                 "description": "ServicePrincipleID for the Service Connection in Azure DevOps"
@@ -116,13 +116,13 @@
         {
             "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
             "apiVersion": "2018-09-01-preview",
-            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', parameters('servicePrincipleId'))]",
+            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', parameters('servicePrincipalId'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('Storage Blob Data Contributor')]",
-                "principalId": "[parameters('servicePrincipleId')]"
+                "principalId": "[parameters('servicePrincipalId')]"
             }
         }
     ]

@@ -3,7 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "value": null
+            "value": "tosokrapitemplates"
+        },
+        "containerName":{
+            "value": "apitemplates"
+        },
+        "location":{
+            "value": "West Europe"
+        },
+        "servicePrincipalId":{
+            "value": "0c7f55b2-9a56-46bf-8803-7c099edaa370"
         }
     }
 }
