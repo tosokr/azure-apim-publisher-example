@@ -20,7 +20,8 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      Write-Host "##vso[task.setvariable variable=servicePrincipleIdGlobal;]$env:servicePrincipalId"
+      $objectId = $env:servicePrincipalId
+      Write-Host "##vso[task.setvariable variable=servicePrincipleIdGlobal;]$objectId"
     addSpnToEnvironment: true
     useGlobalConfig: false
 - task: AzurePowerShell@5
