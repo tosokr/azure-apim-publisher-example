@@ -116,7 +116,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
             "apiVersion": "2018-09-01-preview",
-            "name": "[parameters('servicePrincipleId')]",
+            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', parameters('servicePrincipleId'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]"
             ],
