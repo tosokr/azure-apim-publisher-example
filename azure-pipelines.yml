@@ -17,7 +17,7 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'APIM_PRODUCTION'
-    scriptType: 'batch'
+    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
       $objectId = (Get-AzADServicePrincipal -ApplicationId $servicePrincipleId).Id
