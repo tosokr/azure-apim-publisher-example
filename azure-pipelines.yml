@@ -21,7 +21,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       Install-Module Az.Resources -Scope CurrentUser -Force
-      $objectId = (Get-AzADServicePrincipal -ApplicationId $env:servicePrincipleId).Id
+      $objectId = (Get-AzADServicePrincipal -ApplicationId  $env:servicePrincipalId).Id
       Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
     addSpnToEnvironment: true
     useGlobalConfig: true
