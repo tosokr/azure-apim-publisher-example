@@ -25,7 +25,7 @@
           },
           "skuCount": {
             "value": 0
-          },
+          },                   
           "ToDoServiceUrl": {
             "value":"https://tosotodo.azurewebsites.net/"
           },
