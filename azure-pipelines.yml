@@ -12,7 +12,7 @@ pool:
 steps:
 - task: AzureFileCopy@4
   inputs:
-    SourcePath: '$(build.sourcesDirectory)'
+    SourcePath: '$(build.sourcesDirectory)\*'
     azureSubscription: 'APIM_PRODUCTION'
     Destination: 'AzureBlob'
     storage: 'tosokrapitemplates'
