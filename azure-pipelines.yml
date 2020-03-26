@@ -45,8 +45,8 @@ steps:
     overrideParameters: |
       -storageAccountName "$(storageAccountName)" 
       -containerName "$(storageContainerName)" 
-      -servicePrincipalId "$(SERVICEPRINCIPALOBJECTID)"
       -location "$(location)"
+      -servicePrincipalId "$(servicePrincipalObjectId)"
     deploymentMode: 'Incremental'
 - task: AzureFileCopy@4
   inputs:
