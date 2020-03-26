@@ -20,7 +20,7 @@ steps:
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      objectId = (Get-AzADServicePrincipal -ApplicationId $servicePrincipleId).Id
+      $objectId = (Get-AzADServicePrincipal -ApplicationId $servicePrincipleId).Id
       Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
     addSpnToEnvironment: true
     useGlobalConfig: true
