@@ -14,6 +14,15 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'APIM_PRODUCTION'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      objectId=$(az ad sp show --id $servicePrincipalId --query objectId --output tsv)
+      echo "##vso[task.setvariable variable=servicePrincipleObjectId]$objectId
+    addSpnToEnvironment: true
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
@@ -27,10 +36,9 @@ steps:
     overrideParameters: |
       -storageAccountName "$(storageAccountName)" 
       -containerName "$(storageContainerName)" 
-      -servicePrincipleId "$(temp)"
+      -servicePrincipleId $(SERVICEPRINCIPLEOBJECTID)
       -location "$(location)"
     deploymentMode: 'Incremental'
-    addSpnToEnvironment: true
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(build.sourcesDirectory)\*'
