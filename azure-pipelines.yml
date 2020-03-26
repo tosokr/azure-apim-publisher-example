@@ -20,13 +20,17 @@ steps:
     azureResourceManagerConnection: 'APIM_PRODUCTION'
     subscriptionId: 'f1aa6a06-4aae-46b3-887c-983d96f64131'
     action: 'Create Or Update Resource Group'
-    addSpnToEnvironment: true
     resourceGroupName: '$(RESOURCEGROUP)'
     location: '$(LOCATION)'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
-    overrideParameters: '-storageAccountName $(STORAGEACCOUNTNAME) -containerName $(STORAGECONTAINERNAME) -servicePrincipleId 038c42bb-d445-4248-a38e-08296c6995bc -location $(LOCATION)'
+    overrideParameters: |
+      -storageAccountName $(STORAGEACCOUNTNAME) 
+      -containerName $(STORAGECONTAINERNAME) 
+      -servicePrincipleId $servicePrincipalId
+      -location $(LOCATION)
     deploymentMode: 'Incremental'
+    addSpnToEnvironment: true
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(build.sourcesDirectory)\*'
