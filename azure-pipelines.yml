@@ -20,6 +20,7 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      Install-Module Az.Resources
       $objectId = (Get-AzADServicePrincipal -ApplicationId $servicePrincipleId).Id
       Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
     addSpnToEnvironment: true
