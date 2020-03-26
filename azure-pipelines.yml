@@ -15,10 +15,18 @@ steps:
     SourcePath: '$(build.sourcesDirectory)\*'
     azureSubscription: 'APIM_PRODUCTION'
     Destination: 'AzureBlob'
-    storage: 'tosokrapitemplates'
-    ContainerName: 'apitemplates'
+    storage: '$(storageAccountName)'
+    ContainerName: '$(storageContainerName)'
     AdditionalArgumentsForBlobCopy: '--recursive=true --overwrite=true'
   displayName: 'Run a one-line script'
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'APIM_PRODUCTION'
+    ScriptType: 'InlineScript'
+    Inline: |
+      Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
+      $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
+    azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
@@ -30,4 +38,5 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
     csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
+    overrideParameters: '-storageSasToken $(token)'
     deploymentMode: 'Incremental'
