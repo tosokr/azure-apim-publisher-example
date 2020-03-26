@@ -17,7 +17,7 @@ steps:
     Destination: 'AzureBlob'
     storage: 'tosokrapitemplates'
     ContainerName: 'apitemplates'
-    AdditionalArgumentsForBlobCopy: '--recursive=true /Y'
+    AdditionalArgumentsForBlobCopy: '--recursive=true --overwrite=true'
   displayName: 'Run a one-line script'
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
