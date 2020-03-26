@@ -20,12 +20,17 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      Install-Module Az.Storage -Scope CurrentUser -Force
-      Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
-      $token = New-AzStorageContainerSASToken -Name $env:STORAGECONTAINERNAME -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
-      Write-Host "##vso[task.setvariable variable=SASToken;]$token"
+      Write-Host "##vso[task.setvariable variable=servicePrincipleIdGlobal;]$env:servicePrincipalId"
     addSpnToEnvironment: true
     useGlobalConfig: false
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'APIM_PRODUCTION'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $objectId = (Get-AzADServicePrincipal -ApplicationId  $env:servicePrincipalIdGlobal).Id
+      Write-Host "##vso[task.setvariable variable=servicePrincipleObjectId;]$objectId"
+    azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
