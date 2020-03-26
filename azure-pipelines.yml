@@ -42,11 +42,7 @@ steps:
     location: '$(LOCATION)'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
-    overrideParameters: |
-      -storageAccountName $(storageAccountName) 
-      -containerName $(storageContainerName) 
-      -location "$(location)"
-      -servicePrincipalId $(servicePrincipalObjectId)
+    overrideParameters: '-storageAccountName $(storageAccountName) -containerName $(storageContainerName) -location "$(location)" -servicePrincipalId $(servicePrincipalObjectId)'
     deploymentMode: 'Incremental'
 - task: AzureFileCopy@4
   inputs:
