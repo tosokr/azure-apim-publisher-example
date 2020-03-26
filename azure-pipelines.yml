@@ -25,10 +25,10 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
     overrideParameters: |
-      -storageAccountName $(storageAccountName) 
-      -containerName $(storageContainerName) 
-      -servicePrincipleId 038c42bb-d445-4248-a38e-08296c6995bc
-      -location $(location)
+      -storageAccountName "$(storageAccountName)" 
+      -containerName "$(storageContainerName)" 
+      -servicePrincipleId $servicePrincipalId 
+      -location "$(location)"
     deploymentMode: 'Incremental'
     addSpnToEnvironment: true
 - task: AzureFileCopy@4
