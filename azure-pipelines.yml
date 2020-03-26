@@ -14,6 +14,20 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'APIM_PRODUCTION'
+    subscriptionId: 'f1aa6a06-4aae-46b3-887c-983d96f64131'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(RESOURCEGROUP)'
+    location: '$(LOCATION)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(build.sourcesDirectory)\storageaccount.template.json'
+    csmParametersFile: '$(build.sourcesDirectory)\storageaccount.parameters.json'
+    overrideParameters: '-storageAccountName $(STORAGEACCOUNTNAME) -containerName $(STORAGECONTAINERNAME) -servicePrincipalId $(SERVICEPRINCIPLEID) -location $(LOCATION)'
+    deploymentMode: 'Incremental'
+    addSpnToEnvironment: true
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(build.sourcesDirectory)\*'
