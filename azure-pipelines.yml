@@ -30,7 +30,7 @@ steps:
     Inline: |
       Set-AzCurrentStorageAccount -ResourceGroupName $env:RESOURCEGROUP -Name $env:STORAGEACCOUNTNAME
       $token = New-AzStorageContainerSASToken -Name templates -Permission r -ExpiryTime (Get-Date).AddMinutes(30.0)
-      ##vso[task.setvariable variable=SASToken;]$token
+      Write-Host "##vso[task.setvariable variable=SASToken;]$token"
       Write-Host $($env:SASTOKEN)
     azurePowerShellVersion: 'LatestVersion'
 - task: AzureResourceManagerTemplateDeployment@3
@@ -44,5 +44,5 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
     csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
-    overrideParameters: '-storageSasToken $(SAStoken)'
+    overrideParameters: '-storageSasToken $(SASTOKEN)'
     deploymentMode: 'Incremental'
