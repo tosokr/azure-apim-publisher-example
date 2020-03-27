@@ -13,10 +13,7 @@
         {
             "type": "Microsoft.ApiManagement/service/namedValues",
             "apiVersion": "2019-12-01-preview",
-            "name": "[concat(parameters('ApimServiceName'), '/5e7ba3704f237c10b8593b3c')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.ApiManagement/service', parameters('ApimServiceName'))]"
-            ],
+            "name": "[concat(parameters('ApimServiceName'), '/5e7ba3704f237c10b8593b3c')]",           
             "properties": {
                 "displayName": "Logger-Credentials-5e7ba3704f237c10b8593b3d",
                 "secret": true,

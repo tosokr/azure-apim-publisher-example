@@ -4,9 +4,6 @@
     "parameters": {
         "applicationInsightName": {
             "type": "string"
-        },
-        "ApimServiceName": {
-            "type": "string"
         }
     },
     "resources": [
