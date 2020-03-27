@@ -218,7 +218,7 @@
                "contentVersion":"1.0.0.0"
             },            
             "parameters": {
-               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" }              
+               "ApimServiceName": {"value": "[parameters('ApimServiceName')]" }              
              }
           },
           "dependsOn": [
