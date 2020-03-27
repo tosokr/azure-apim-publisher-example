@@ -72,5 +72,5 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: '$(build.sourcesDirectory)\master.template.simple.json'
     csmParametersFile: '$(build.sourcesDirectory)\master.parameters.json'
-    overrideParameters: '-storageSasToken $(SASTOKEN)'
+    overrideParameters: '-storageAccountName $(STORAGEACCOUNTNAME) -blobContainerName $(STORAGECONTAINERNAME) -storageSasToken $(SASTOKEN)'
     deploymentMode: 'Incremental'
