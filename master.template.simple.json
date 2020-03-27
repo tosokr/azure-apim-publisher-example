@@ -72,6 +72,25 @@
             "metadata": {
                 "description": "SAS token to access the linked templates"
             }
+        },
+        "applicationInsightsName": {           
+            "type": "string",
+            "metadata": {
+                "description": "Application Insight instance used for logging"
+            }
+        },
+         "location":{
+            "type":"string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location where to create the resources"
+            } 
+        },
+        "applicationInsightsInstrumentationKey":{
+            "type":"securestring",
+            "metadata": {
+                "description": "Location where to create the resources"
+            } 
         }                      
     },   
     "variables": {
@@ -96,7 +115,25 @@
                 "skuCount": {"value": "[parameters('skuCount')]" }
                }
             }
-         },        
+         },  
+          {
+            "apiVersion": "2017-05-10",
+            "name": "namedValuesTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                 "uri":"[concat(variables('storageContainerLocationUrl'), '/namedValues.template.json', parameters('storageSasToken'))]",
+                 "contentVersion":"1.0.0.0"
+              },
+              "parameters": {
+                 "applicationInsightsInstrumentationKey": {"value": "[parameters('applicationInsightsInstrumentationKey')]" }                 
+               }
+            },
+            "dependsOn": [
+             "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]"             
+            ]
+         },     
          {
             "apiVersion": "2017-05-10",
             "name": "productsTemplate",
@@ -132,7 +169,63 @@
           "dependsOn": [
            "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"             
           ]
-       }     
+       },
+        {
+          "apiVersion": "2017-05-10",
+          "name": "applicationInsightsTemplate",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+               "uri":"[concat(variables('storageContainerLocationUrl'), '/applicationInsights.template.json',parameters('storageSasToken'))]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters": {
+               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" },
+               "location":{"value": "[parameters('location')]" }
+             }
+          }         
+       },
+        {
+          "apiVersion": "2017-05-10",
+          "name": "loggerTemplate",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+               "uri":"[concat(variables('storageContainerLocationUrl'), '/logger.template.json',parameters('storageSasToken'))]",
+               "contentVersion":"1.0.0.0"
+            },
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]",
+                 "[resourceId('Microsoft.Resources/deployments', 'applicationInsightsTemplate')]"
+            ],
+            "parameters": {
+               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" },
+               "ApimServiceName":{"value": "[parameters('ApimServiceName')]" }
+             }
+          }         
+       },
+       {
+          "apiVersion": "2017-05-10",
+          "name": "diagnosticsTemplate",
+          "type": "Microsoft.Resources/deployments",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+               "uri":"[concat(variables('storageContainerLocationUrl'), '/diagnostics.template.json',parameters('storageSasToken'))]",
+               "contentVersion":"1.0.0.0"
+            },
+            "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]",
+                 "[resourceId('Microsoft.Resources/deployments', 'loggerTemplate')]"
+            ],
+            "parameters": {
+               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" },
+               "ApimServiceName":{"value": "[parameters('ApimServiceName')]" }
+             }
+          }     
+       }   
     ],
     "outputs": {}
 }

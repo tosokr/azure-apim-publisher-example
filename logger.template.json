@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applicationInsightName": {
+            "type": "string"
+        },
+        "ApimServiceName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/loggers",
+            "apiVersion": "2019-12-01-preview",
+            "name": "[concat(parameters('ApimServiceName'), '/appins-', parameters('ApimServiceName'))]",            
+            "properties": {
+                "loggerType": "applicationInsights",
+                "credentials": {
+                    "instrumentationKey": "{{Logger-Credentials-5e7ba3704f237c10b8593b3d}}"
+                },
+                "isBuffered": true,
+                "resourceId": "[resourceId('microsoft.insights/components', parameters('applicationInsightName'))]"
+            }
+        }
+    ]
+}

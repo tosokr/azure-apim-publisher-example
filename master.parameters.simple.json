@@ -16,6 +16,13 @@
           },
           "skuCount": {
             "value": 0
+          },
+          "applicationInsightsName":{
+            "value": "appIns-tosokr-production"
+          },
+          "applicationInsightsInstrumentationKey":
+          {
+            "value": "c7c610b8-9244-4645-8302-eec112c9927b"
           }                   
     }
 }

@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applicationInsightsInstrumentationKey": {
+            "type": "string"
+        },
+        "ApimServiceName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/namedValues",
+            "apiVersion": "2019-12-01-preview",
+            "name": "[concat(parameters('ApimServiceName'), '/5e7ba3704f237c10b8593b3c')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('ApimServiceName'))]"
+            ],
+            "properties": {
+                "displayName": "Logger-Credentials-5e7ba3704f237c10b8593b3d",
+                "secret": true,
+                "value": "[parameters('applicationInsightsInstrumentationKey')]"
+            }
+        }
+    ]
+}

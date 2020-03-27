@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applicationInsightName": {
+            "type": "string"
+        },
+        "ApimServiceName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/diagnostics",
+            "apiVersion": "2019-12-01-preview",
+            "name": "[concat(parameters('applicationInsightName'), '/applicationinsights')]",           
+            "properties": {
+                "alwaysLog": "allErrors",
+                "httpCorrelationProtocol": "Legacy",
+                "logClientIp": true,
+                "loggerId": "[resourceId('Microsoft.ApiManagement/service/loggers', parameters('applicationInsightName'), concat('appins-', parameters('applicationInsightName')))]",
+                "sampling": {
+                    "samplingType": "fixed",
+                    "percentage": 100
+                }
+            }
+        }
+    ]
+}

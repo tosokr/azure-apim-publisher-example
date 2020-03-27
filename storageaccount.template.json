@@ -35,6 +35,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
+            "comments":"This storage account is for a temporary storage of linked templates during the API Management deployment",
             "name": "[parameters('storageAccountName')]",
             "location": "[parameters('location')]",
             "sku": {
