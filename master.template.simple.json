@@ -73,39 +73,10 @@
                 "description": "SAS token to access the linked templates"
             }
         }                      
+    },   
+    "variables": {
+      "storageContainerLocationUrl": "[concat(parameters('storageAccountProtocol'),'://',parameters('storageAccountName'),'.',parameters('storageAccountGlobalUrl'),'/',parameters('blobContainerName') )]"
     },
-    "functions":[
-    {
-      "namespace": "tosokr",
-      "members": {
-        "getStorageContainerUrl": {
-          "parameters": [
-            {
-              "name": "storageAccountProtocol",
-              "type": "string"
-            },
-            {
-              "name": "storageAccountName",
-              "type": "string"
-            },
-            {
-              "name": "storageAccountGlobalUrl",
-              "type": "string"
-            },
-            {
-              "name": "blobContainerName",
-              "type": "string"
-            }
-          ],
-          "output": {
-            "type": "string",
-            "value": "[concat(parameters('storageAccountProtocol'),'://',parameters('storageAccountName'),'.',parameters('storageAccountGlobalUrl'),'/',parameters('blobContainerName') )]"
-          }
-        }
-      }
-    }
-    ],   
-    "variables": {},
     "resources": [
         {
             "apiVersion": "2017-05-10",
@@ -114,7 +85,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                 "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')),'/service.template.json',parameters('storageSasToken'))]",
+                 "uri":"[concat(variables('storageContainerLocationUrl'),'/service.template.json',parameters('storageSasToken'))]",
                  "contentVersion":"1.0.0.0"
               },
               "parameters": {
@@ -133,7 +104,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                 "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')), '/products/products.template.json', parameters('storageSasToken'))]",
+                 "uri":"[concat(variables('storageContainerLocationUrl'), '/products/products.template.json', parameters('storageSasToken'))]",
                  "contentVersion":"1.0.0.0"
               },
               "parameters": {
@@ -151,7 +122,7 @@
           "properties": {
             "mode": "Incremental",
             "templateLink": {
-               "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')), '/subscriptions.template.json',parameters('storageSasToken'))]",
+               "uri":"[concat(variables('storageContainerLocationUrl'), '/subscriptions.template.json',parameters('storageSasToken'))]",
                "contentVersion":"1.0.0.0"
             },
             "parameters": {
