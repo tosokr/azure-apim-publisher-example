@@ -99,7 +99,7 @@
           ],
           "output": {
             "type": "string",
-            "value": "[concat(parameters('storageAccountProtocol'),'://',parameters('storageAccountName'),'.',parameters('storageAccountGlobalUrl'),',',parameters('blobContainerName') )]"
+            "value": "[concat(parameters('storageAccountProtocol'),'://',parameters('storageAccountName'),'.',parameters('storageAccountGlobalUrl'),'/',parameters('blobContainerName') )]"
           }
         }
       }
