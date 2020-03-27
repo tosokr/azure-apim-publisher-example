@@ -196,16 +196,16 @@
             "templateLink": {
                "uri":"[concat(variables('storageContainerLocationUrl'), '/logger.template.json',parameters('storageSasToken'))]",
                "contentVersion":"1.0.0.0"
-            },
-            "dependsOn": [
-                 "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]",
-                 "[resourceId('Microsoft.Resources/deployments', 'applicationInsightsTemplate')]"
-            ],
+            },            
             "parameters": {
                "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" },
                "ApimServiceName":{"value": "[parameters('ApimServiceName')]" }
              }
-          }         
+          },
+          "dependsOn": [
+                 "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]",
+                 "[resourceId('Microsoft.Resources/deployments', 'applicationInsightsTemplate')]"
+            ]         
        },
        {
           "apiVersion": "2017-05-10",
@@ -216,16 +216,15 @@
             "templateLink": {
                "uri":"[concat(variables('storageContainerLocationUrl'), '/diagnostics.template.json',parameters('storageSasToken'))]",
                "contentVersion":"1.0.0.0"
-            },
-            "dependsOn": [
+            },            
+            "parameters": {
+               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" }              
+             }
+          },
+          "dependsOn": [
                  "[resourceId('Microsoft.Resources/deployments', 'serviceTemplate')]",
                  "[resourceId('Microsoft.Resources/deployments', 'loggerTemplate')]"
-            ],
-            "parameters": {
-               "applicationInsightName": {"value": "[parameters('applicationInsightsName')]" },
-               "ApimServiceName":{"value": "[parameters('ApimServiceName')]" }
-             }
-          }     
+          ]     
        }   
     ],
     "outputs": {}
