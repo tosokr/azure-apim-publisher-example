@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "repoBaseUrl":{
-            "type": "string",
-            "metadata": {
-                "description": "Base URL of the repository"
-            }
-        },
         "ApimServiceName": {
             "type": "string",
             "metadata": {
@@ -44,38 +38,73 @@
                     "The instance  size of this API Management service."
             }
         },
+        "storageAccountName":{
+          "type": "string",
+          "metadata": {
+                "description": "Name of the storage account"
+            }
+        },
+        "blobContainerName":{
+          "type": "string",
+          "metadata": {
+                "description": "Name of the blob container"
+            }
+        },
+        "storageAccountGlobalUrl":{
+          "type": "string",
+          "allowedValues": ["blob.core.windows.net"],
+          "defaultValue": "blob.core.windows.net",
+          "metadata": {
+                "description": "Global URL of the storage accounts"
+            }
+        },
+        "storageAccountProtocol":{
+          "type": "string",
+          "allowedValues": ["http", "https"],
+          "defaultValue": "https",
+          "metadata": {
+                "description": "Protocol to access storage account"
+          }
+        },
         "storageSasToken": {
             "type": "string",
             "minLength": 1,
             "metadata": {
                 "description": "SAS token to access the linked templates"
             }
-        },
-        "LinkedTemplatesBaseUrl": {
-         "type": "string",
-         "metadata": {
-           "description": "Base URL of the repository that contains the generated templates"
-         }
-       },
-       "PolicyXMLBaseUrl": {
-         "type": "string",
-         "metadata": {
-           "description": "Base URL of the repository that contains the generated policy files"
-         }         
-       },
-       "ToDoServiceUrl": {
-        "type": "string",
-        "metadata": {
-          "description": "Service URL for the backend APIs"
-        }         
-      },
-      "ToDoV2ServiceUrl": {
-        "type": "string",
-        "metadata": {
-          "description": "Service URL for the backend APIs"
-        }         
-      }    
+        }                      
     },
+    "functions":[
+    {
+      "namespace": "tosokr",
+      "members": {
+        "getStorageContainerUrl": {
+          "parameters": [
+            {
+              "name": "storageAccountProtocol",
+              "type": "string"
+            },
+            {
+              "name": "storageAccountName",
+              "type": "string"
+            },
+            {
+              "name": "storageAccountGlobalUrl",
+              "type": "string"
+            },
+            {
+              "name": "blobContainerName",
+              "type": "string"
+            }
+          ],
+          "output": {
+            "type": "string",
+            "value": "[concat(parameters('storageAccountProtocol'),'://',parameters('storageAccountName'),'.',parameters('storageAccountGlobalUrl'),',',parameters('blobContainerName') )]"
+          }
+        }
+      }
+    }
+    ],   
     "variables": {},
     "resources": [
         {
@@ -85,7 +114,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                 "uri":"[concat(parameters('repoBaseUrl'), '/service.template.json',parameters('storageSasToken'))]",
+                 "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')),'/service.template.json',parameters('storageSasToken'))]",
                  "contentVersion":"1.0.0.0"
               },
               "parameters": {
@@ -104,7 +133,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                 "uri":"[concat(parameters('repoBaseUrl'), '/products/products.template.json', parameters('storageSasToken'))]",
+                 "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')), '/products/products.template.json', parameters('storageSasToken'))]",
                  "contentVersion":"1.0.0.0"
               },
               "parameters": {
@@ -122,7 +151,7 @@
           "properties": {
             "mode": "Incremental",
             "templateLink": {
-               "uri":"[concat(parameters('repoBaseUrl'), '/subscriptions.template.json',parameters('storageSasToken'))]",
+               "uri":"[concat(tosokr.getStorageContainerUrl(parameters('storageAccountProtocol'),parameters('storageAccountName'),parameters('storageAccountGlobalUrl'),parameters('blobContainerName')), '/subscriptions.template.json',parameters('storageSasToken'))]",
                "contentVersion":"1.0.0.0"
             },
             "parameters": {
