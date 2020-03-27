@@ -127,7 +127,8 @@
                  "contentVersion":"1.0.0.0"
               },
               "parameters": {
-                 "applicationInsightsInstrumentationKey": {"value": "[parameters('applicationInsightsInstrumentationKey')]" }                 
+                 "applicationInsightsInstrumentationKey": {"value": "[parameters('applicationInsightsInstrumentationKey')]" },
+                 "ApimServiceName":{"value": "[parameters('ApimServiceName')]" }                
                }
             },
             "dependsOn": [
